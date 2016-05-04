@@ -11,25 +11,14 @@ retval = 0;
 
     if ret ~= 0
         str = 'communication error';
-    else
-        %% muxes cfg
-        s = get(parent.tb,'string');  
-        if  strcmpi(s, spi_chip_fpga)
-            ret = ft_spi_io_cfg(hDLL, ftHandle, 1, 0x08, 0x0B); % FPGA
-        else
-            ret = ft_spi_io_cfg(hDLL, ftHandle, 1, 0x24, 0xB4); % DSP
-        endif
-        
-        #i = 0;
-        #while i<256
-        #  ft_spi_io_cfg(hDLL, ftHandle, 1, i, 0xFF); % FPGA
-        #  i = i + 1;
-        #endwhile
-        
+    else    
+        %% setup board's muxes
+        [val dir] = get_io_cfg(get(parent.tb,'string'));
+        ret = ft_spi_io_cfg(hDLL, ftHandle, 1, val, dir);
     
         %% Read ID
-        [ret data] = ft_spi_read_id(hDLL, ftHandle, 12);
-        %pause(0.05);  % makes blink longer
+        [ret data] = ft_spi_read_id(hDLL, ftHandle, 12);  # how many bytes to read
+        pause(0.05);  % makes blink longer
 
         %% CloseHandler
         ret = ft_spi_close(hDLL, ftHandle);

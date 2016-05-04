@@ -11,10 +11,16 @@ global spi_chip_dsp = 'DSP SPI';            #define
 global spi_chip_tgl_str;
 
 global n25q032_size = 4194304;              % memory size in bytes
-
+global n25q032_page_size_write = 256;
 global n25q032_page_size_read = 4096;
 global n25q032_subpage_size = 4096;         % 
 global n25q032_subpages_num = 1024;         % 
+
+global m25p16_size = 2097152;              % memory size in bytes
+global m25p16_page_size_write = 256;
+global m25p16_page_size_read = 4096;
+#global m25p16_subpage_size = 4096;         % 
+#global m25p16_subpages_num = 1024;         % 
 
 %libfilename = 'peraftdi_d64.dll'; 
 %libheader = 'peraftdiDllApi.h';

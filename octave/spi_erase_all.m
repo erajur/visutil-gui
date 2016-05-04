@@ -15,24 +15,17 @@ retval = 0;
         
     if ret == 0
 
-        %% muxes cfg
-        ss = get(parent.tb,'string');  
-        if  strcmpi(ss, spi_chip_fpga)
-            ret = ft_spi_io_cfg(hDLL, ftHandle, 1, 0x08, 0x0B); % FPGA
-        else
-            ret = ft_spi_io_cfg(hDLL, ftHandle, 1, 0x24, 0xB4); % DSP
-        endif
-    
+        %% setup board's muxes
+        [val dir] = get_io_cfg(get(parent.tb,'string'));
+        ret = ft_spi_io_cfg(hDLL, ftHandle, 1, val, dir);    
         ret = ft_spi_erase_all(hDLL, ftHandle);
 
         str = textprogressbar(100);
         UpdateConsole(str, 0, parent);
-
         s = ' done';
         
         %% CloseHandler
-        ret = ft_spi_close(hDLL, ftHandle);
-        
+        ret = ft_spi_close(hDLL, ftHandle);        
     else
         s = 'communication error';    
     endif
